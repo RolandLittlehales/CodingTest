@@ -7,10 +7,10 @@ const SearchResults = ({ listings }: { listings: IListing[] }) => {
   return (
     <Grid container item xs={12}>
       <Grid item xs={12}>
-        <Typography>Results</Typography>
+        <Typography variant="h3">Results</Typography>
       </Grid>
       {listings.map((listing) => (
-        <Grid item xs={12}>
+        <Grid item xs={12} key={listing.id}>
           <ListingCard listing={listing} />
         </Grid>
       ))}

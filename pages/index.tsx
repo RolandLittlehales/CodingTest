@@ -6,9 +6,6 @@ export default function Home() {
   return (
     <div className={styles.container}>
       <HomeBody />
-      <footer className={styles.footer}>
-        <CompanyLogo />
-      </footer>
     </div>
   );
 }

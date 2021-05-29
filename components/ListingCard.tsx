@@ -58,8 +58,8 @@ const ListingCard = ({
   };
 
   const buttonWording = () => {
-    if (canChangeState) return saved ? "Removing Listing" : "Adding Listing";
-    return saved ? "Remove" : "Add";
+    if (canChangeState) return saved ? "Removing Property" : "Adding Property";
+    return saved ? "Remove Property" : "Add Property";
   };
 
   return (

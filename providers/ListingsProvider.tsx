@@ -39,6 +39,9 @@ const ListingsProvider = ({ children }: { children: ReactNode }) => {
     setListingSearchLoading(false);
   };
 
+  const sortListings = (listings: IListing[]) =>
+    listings.sort((a, b) => (a.id > b.id ? 1 : -1));
+
   /**
    * Add the listing to save and remove it from available
    * @param listing
@@ -52,8 +55,8 @@ const ListingsProvider = ({ children }: { children: ReactNode }) => {
     );
     savedListings.push(listing);
 
-    setSavedListings(savedListings);
-    setAvailableListings(newAvailableListings);
+    setSavedListings(sortListings(savedListings));
+    setAvailableListings(sortListings(newAvailableListings));
 
     setListingSearchLoading(false);
   };
@@ -71,8 +74,8 @@ const ListingsProvider = ({ children }: { children: ReactNode }) => {
     );
     availableListings.push(listing);
 
-    setSavedListings(newSavedListings);
-    setAvailableListings(availableListings);
+    setSavedListings(sortListings(newSavedListings));
+    setAvailableListings(sortListings(availableListings));
 
     setListingSearchLoading(false);
   };

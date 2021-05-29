@@ -1,11 +1,13 @@
-import CompanyLogo from "../icons/CompanyLogo";
-import styles from "../styles/Home.module.css";
 import HomeBody from "../components/HomeBody";
+import ListingsProvider from "../providers/ListingsProvider";
+import styles from "../styles/Home.module.css";
 
 export default function Home() {
   return (
-    <div className={styles.container}>
-      <HomeBody />
-    </div>
+    <ListingsProvider>
+      <div className={styles.container}>
+        <HomeBody />
+      </div>
+    </ListingsProvider>
   );
 }

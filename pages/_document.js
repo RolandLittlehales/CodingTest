@@ -1,7 +1,6 @@
-import React from "react";
-import Document, { Html, Head, Main, NextScript } from "next/document";
 import { ServerStyleSheets } from "@material-ui/styles";
-import CompanyLogo from "../icons/CompanyLogo";
+import Document, { Head, Html, Main, NextScript } from "next/document";
+import React from "react";
 
 /**
  * Due to the SSR nature of Next.js refreshing the page does not pick up useStyles by default (Not an issue if I went with css/SCSS files).

@@ -10,8 +10,9 @@ import {
   makeStyles,
   Typography,
 } from "@material-ui/core";
-import React, { useState } from "react";
+import React, { useContext, useState } from "react";
 import { IListing } from "../data/initData";
+import { ListingsContext } from "../providers/ListingsProvider";
 
 const useStyles = makeStyles({
   root: ({ backgroundColor }: { backgroundColor: string }) => ({
@@ -39,12 +40,20 @@ const ListingCard = ({
   const classes = useStyles({
     color: listing.agency.brandingColors.primary,
   });
-  const [dummy, setDummy] = useState(0);
+
+  const { saveListing, removeFromSaved, listingSearchLoading } =
+    useContext(ListingsContext);
 
   /**
    * handle add/removing listing from the saved list
    */
-  const onClick = () => setDummy(dummy + 1);
+  const onClick = () =>
+    saved ? removeFromSaved(listing) : saveListing(listing);
+
+  const buttonWording = () => {
+    if (listingSearchLoading) saved ? "Removing Listing" : "Adding Listing";
+    return saved ? "Remove" : "Add";
+  };
 
   return (
     <Card className={classes.root}>
@@ -69,8 +78,13 @@ const ListingCard = ({
       </CardActionArea>
       <CardActions>
         <Grid container xs={12} className={classes.ctaSection}>
-          <Button size="small" color="primary" onClick={onClick}>
-            {saved ? "remove" : "add"}
+          <Button
+            size="small"
+            color="primary"
+            onClick={onClick}
+            disabled={listingSearchLoading}
+          >
+            {buttonWording()}
           </Button>
         </Grid>
       </CardActions>

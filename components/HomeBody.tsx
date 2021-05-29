@@ -1,15 +1,13 @@
 import { Grid, Typography } from "@material-ui/core";
-import React from "react";
-import SavedListings from "./savedListings";
-import SearchResults from "./SearchResults";
-import initData from "../data/initData";
+import React, { useContext, useEffect } from "react";
 import CompanyLogo from "../icons/CompanyLogo";
-
+import { ListingsContext } from "../providers/ListingsProvider";
 import styles from "../styles/Home.module.css";
+import SavedListings from "./SavedListings";
+import SearchResults from "./SearchResults";
 
 const HomeBody = () => {
-  const results = initData.results;
-  const savedListings = initData.saved;
+  const { searchListings } = useContext(ListingsContext);
 
   return (
     <main className={styles.main}>
@@ -27,10 +25,10 @@ const HomeBody = () => {
       </Typography>
       <Grid container>
         <Grid item xs={12} md={8}>
-          <SearchResults listings={results} />
+          <SearchResults />
         </Grid>
         <Grid item xs={12} md={4}>
-          <SavedListings listings={savedListings} />
+          <SavedListings />
         </Grid>
       </Grid>
     </main>

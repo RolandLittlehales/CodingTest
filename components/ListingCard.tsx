@@ -15,15 +15,17 @@ import { IListing } from "../data/initData";
 import { ListingsContext } from "../providers/ListingsProvider";
 
 const useStyles = makeStyles({
-  root: ({ backgroundColor }: { backgroundColor: string }) => ({
+  root: () => ({
     maxWidth: 345,
-    backgroundColor: backgroundColor,
     margin: "10px",
     "&:hover": {
       "& $ctaSection": {
         display: "block",
       },
     },
+  }),
+  header: ({ backgroundColor }: { backgroundColor: string }) => ({
+    backgroundColor: backgroundColor,
   }),
   ctaSection: () => ({
     display: "none",
@@ -38,20 +40,25 @@ const ListingCard = ({
   saved?: boolean;
 }) => {
   const classes = useStyles({
-    color: listing.agency.brandingColors.primary,
+    backgroundColor: listing.agency.brandingColors.primary,
   });
 
+  const [changingState, setChangingState] = useState<boolean>(false);
   const { saveListing, removeFromSaved, listingSearchLoading } =
     useContext(ListingsContext);
+  const canChangeState = changingState && listingSearchLoading;
 
   /**
    * handle add/removing listing from the saved list
    */
-  const onClick = () =>
-    saved ? removeFromSaved(listing) : saveListing(listing);
+  const onClick = async () => {
+    setChangingState(true);
+    saved ? await removeFromSaved(listing) : await saveListing(listing);
+    setChangingState(false);
+  };
 
   const buttonWording = () => {
-    if (listingSearchLoading) saved ? "Removing Listing" : "Adding Listing";
+    if (canChangeState) return saved ? "Removing Listing" : "Adding Listing";
     return saved ? "Remove" : "Add";
   };
 
@@ -59,8 +66,7 @@ const ListingCard = ({
     <Card className={classes.root}>
       <CardHeader
         avatar={<img src={listing.agency.logo} />}
-        title=""
-        subheader=""
+        className={classes.header}
       />
       <CardActionArea>
         <CardMedia
@@ -82,7 +88,7 @@ const ListingCard = ({
             size="small"
             color="primary"
             onClick={onClick}
-            disabled={listingSearchLoading}
+            disabled={canChangeState}
           >
             {buttonWording()}
           </Button>

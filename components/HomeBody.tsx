@@ -1,14 +1,11 @@
 import { Grid, Typography } from "@material-ui/core";
-import React, { useContext, useEffect } from "react";
+import React from "react";
 import CompanyLogo from "../icons/CompanyLogo";
-import { ListingsContext } from "../providers/ListingsProvider";
 import styles from "../styles/Home.module.css";
 import SavedListings from "./SavedListings";
 import SearchResults from "./SearchResults";
 
 const HomeBody = () => {
-  const { searchListings } = useContext(ListingsContext);
-
   return (
     <main className={styles.main}>
       <Grid container className={styles.title}>

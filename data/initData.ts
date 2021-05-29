@@ -15,7 +15,7 @@ interface IListing {
   mainImage: string;
 }
 
-const data: ISearchResult = {
+const initData: ISearchResult = {
   results: [
     {
       price: "$726,500",
@@ -71,5 +71,5 @@ const data: ISearchResult = {
   ],
 };
 
-export default data;
+export default initData;
 export type { IListing, ISearchResult };

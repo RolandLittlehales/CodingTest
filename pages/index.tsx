@@ -4,7 +4,12 @@ import Image from "next/image";
 import SavedListings from "../components/savedListings";
 import styles from "../styles/Home.module.css";
 
+import initData from "../data/initData";
+import SearchResults from "../components/SearchResults";
+
 export default function Home() {
+  const results = initData.results;
+
   return (
     <div className={styles.container}>
       <Head>
@@ -31,7 +36,7 @@ export default function Home() {
         </Typography>
         <Grid container>
           <Grid item xs={12} md={8}>
-            {/* available listings go here */}
+            <SearchResults listings={results} />
           </Grid>
           <Grid item xs={12} md={4}>
             <SavedListings />

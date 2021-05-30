@@ -89,7 +89,7 @@ const ListingCard = ({
             color="primary"
             onClick={onClick}
             disabled={canChangeState}
-            id={`listing_${listing.id}`}
+            id={`listing_${listing.id}_button`}
           >
             {buttonWording()}
           </Button>

@@ -1,13 +1,13 @@
 import { configure, mount, ReactWrapper, ShallowWrapper } from "enzyme";
+import Adapter from "enzyme-adapter-react-16";
+import jsdom from "jsdom";
 import React from "react";
 import initData, { IListing } from "../data/initData";
-import ListingsProvider, {
+import {
   IListingsContext,
   ListingsContext,
 } from "../providers/ListingsProvider";
-import SavedListings from "./SavedListings";
-import Adapter from "enzyme-adapter-react-16";
-import jsdom from "jsdom";
+import SearchResults from "./SearchResults";
 
 configure({ adapter: new Adapter() });
 
@@ -25,7 +25,7 @@ const testProvider: IListingsContext = {
   removeFromSaved: (listing: IListing) => null,
 };
 
-describe("SavedListings", () => {
+describe("SearchResults", () => {
   let component: ReactWrapper | ShallowWrapper;
 
   // Cleanup mock
@@ -37,28 +37,29 @@ describe("SavedListings", () => {
   it("should render the default list of data", () => {
     component = mount(
       <ListingsContext.Provider value={{ ...testProvider }}>
-        <SavedListings />
+        <SearchResults />
       </ListingsContext.Provider>
     );
-    expect(component.find("#savedListings").exists()).toBe(true);
-    expect(component.find("#listing_4").exists()).toBe(true);
+    expect(component.find("#searchResults").exists()).toBe(true);
+    expect(component.find("#listing_1").exists()).toBe(true);
+    expect(component.find("#listing_2").exists()).toBe(true);
+    expect(component.find("#listing_3").exists()).toBe(true);
 
-    expect(component.find("#listing_1").exists()).toBe(false);
-    expect(component.find("#listing_2").exists()).toBe(false);
-    expect(component.find("#listing_3").exists()).toBe(false);
+    expect(component.find("#listing_4").exists()).toBe(false);
   });
 
   it("should render no cards when supplied with no listings", () => {
     component = mount(
-      <ListingsContext.Provider value={{ ...testProvider, savedListings: [] }}>
-        <SavedListings />
+      <ListingsContext.Provider
+        value={{ ...testProvider, availableListings: [] }}
+      >
+        <SearchResults />
       </ListingsContext.Provider>
     );
-    expect(component.find("#savedListings").exists()).toBe(true);
-    expect(component.find("#savedListings_list").exists()).toBe(true);
-
+    expect(component.find("#searchResults").exists()).toBe(true);
+    expect(component.find("#searchResults_list").exists()).toBe(true);
     expect(
-      component.find("#savedListings_list").hostNodes().children().length
+      component.find("#searchResults_list").hostNodes().children().length
     ).toBe(0);
   });
 });

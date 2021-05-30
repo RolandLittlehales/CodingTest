@@ -63,7 +63,7 @@ const ListingCard = ({
   };
 
   return (
-    <Card className={classes.root}>
+    <Card className={classes.root} id={`listing_${listing.id}`}>
       <CardHeader
         avatar={<img src={listing.agency.logo} />}
         className={classes.header}
@@ -83,12 +83,13 @@ const ListingCard = ({
         </CardContent>
       </CardActionArea>
       <CardActions>
-        <Grid container xs={12} className={classes.ctaSection}>
+        <Grid item xs={12} className={classes.ctaSection}>
           <Button
             size="small"
             color="primary"
             onClick={onClick}
             disabled={canChangeState}
+            id={`listing_${listing.id}`}
           >
             {buttonWording()}
           </Button>

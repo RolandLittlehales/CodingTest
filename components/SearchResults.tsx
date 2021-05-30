@@ -7,7 +7,7 @@ import ListingCard from "./ListingCard";
 const SearchResults = () => {
   const { availableListings = [] } = useContext(ListingsContext);
   return (
-    <Grid container item xs={12}>
+    <Grid container item xs={12} id="searchResults">
       <Grid item xs={12}>
         <Typography variant="h3">Results</Typography>
       </Grid>

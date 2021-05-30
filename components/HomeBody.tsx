@@ -7,7 +7,7 @@ import SearchResults from "./SearchResults";
 
 const HomeBody = () => {
   return (
-    <main className={styles.main}>
+    <main className={styles.main} id="homeBody">
       <Grid container className={styles.title}>
         <Grid item xs={12}>
           <h1>View All Available Listings</h1>

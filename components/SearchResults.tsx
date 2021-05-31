@@ -13,7 +13,7 @@ const SearchResults = () => {
       </Grid>
       <Grid item container xs={12} id="searchResults_list">
         {availableListings.map((listing) => (
-          <Grid item xs={12} key={listing.id}>
+          <Grid item xs={12} key={listing.id} data-name="listingCardWrapper">
             <ListingCard listing={listing} />
           </Grid>
         ))}

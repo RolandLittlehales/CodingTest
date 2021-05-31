@@ -63,7 +63,11 @@ const ListingCard = ({
   };
 
   return (
-    <Card className={classes.root} id={`listing_${listing.id}`}>
+    <Card
+      className={classes.root}
+      id={`listing_${listing.id}`}
+      data-name="listingCard"
+    >
       <CardHeader
         avatar={<img src={listing.agency.logo} />}
         className={classes.header}

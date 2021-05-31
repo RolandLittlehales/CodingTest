@@ -23,6 +23,7 @@ const testProvider: IListingsContext = {
   searchListings: () => null,
   saveListing: (listing: IListing) => null,
   removeFromSaved: (listing: IListing) => null,
+  useFakeApiCall: false,
 };
 
 /**

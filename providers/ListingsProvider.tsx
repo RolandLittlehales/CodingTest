@@ -1,5 +1,10 @@
 import React, { ReactNode, useEffect, useState } from "react";
 import initData, { IListing } from "../data/initData";
+import {
+  delay,
+  removeFromListingFromArray,
+  sortListingsById,
+} from "../utils/utils";
 
 export interface IListingsContext {
   savedListings: IListing[];
@@ -8,39 +13,48 @@ export interface IListingsContext {
   searchListings: () => void;
   saveListing: (listing: IListing) => void;
   removeFromSaved: (listing: IListing) => void;
+  useFakeApiCall: boolean;
 }
 
 export const ListingsContext = React.createContext({} as IListingsContext);
-
 /**
- * To simulate fake api
- * @param time multiplier of how long to random delay for
- * @returns
+ * provider to used by tests only
+ * @test only
  */
-const delay =
-  (time: number) =>
-  (time = Math.random() * 1500) =>
-    new Promise((resolve) => setTimeout(resolve, time));
+export let providerValue: IListingsContext = {
+  savedListings: [],
+  availableListings: [],
+  listingSearchLoading: false,
+  searchListings: () => null,
+  saveListing: (listing: IListing) => null,
+  removeFromSaved: (listing: IListing) => null,
+  useFakeApiCall: true,
+};
 
 const ListingsProvider = ({ children }: { children: ReactNode }) => {
-  const [savedListings, setSavedListings] = useState<IListing[]>([]);
-  const [availableListings, setAvailableListings] = useState<IListing[]>([]);
-  const [listingSearchLoading, setListingSearchLoading] =
-    useState<boolean>(true);
+  const [savedListings, setSavedListings] = useState<IListing[]>(
+    providerValue.savedListings
+  );
+  const [availableListings, setAvailableListings] = useState<IListing[]>(
+    providerValue.availableListings
+  );
+  const [listingSearchLoading, setListingSearchLoading] = useState<boolean>(
+    providerValue.listingSearchLoading
+  );
+  const [useFakeApiCall, setUseFakeApiCall] = useState<boolean>(
+    providerValue.useFakeApiCall
+  );
 
-  const fakeApiCall = delay(2);
+  const fakeApiCall = delay(1);
 
   const searchListings = async () => {
     setListingSearchLoading(true);
 
-    await fakeApiCall();
+    if (useFakeApiCall) await fakeApiCall();
     setSavedListings(initData.saved);
     setAvailableListings(initData.results);
     setListingSearchLoading(false);
   };
-
-  const sortListings = (listings: IListing[]) =>
-    listings.sort((a, b) => (a.id > b.id ? 1 : -1));
 
   /**
    * Add the listing to save and remove it from available
@@ -48,15 +62,16 @@ const ListingsProvider = ({ children }: { children: ReactNode }) => {
    */
   const saveListing = async (listing: IListing) => {
     setListingSearchLoading(true);
-    await fakeApiCall();
+    if (useFakeApiCall) await fakeApiCall();
 
-    const newAvailableListings = availableListings.filter(
-      (listingToCompare) => listing.id !== listingToCompare.id
+    const newAvailableListings = removeFromListingFromArray(
+      availableListings,
+      listing.id
     );
     savedListings.push(listing);
 
-    setSavedListings(sortListings(savedListings));
-    setAvailableListings(sortListings(newAvailableListings));
+    setSavedListings(sortListingsById(savedListings));
+    setAvailableListings(sortListingsById(newAvailableListings));
 
     setListingSearchLoading(false);
   };
@@ -67,33 +82,36 @@ const ListingsProvider = ({ children }: { children: ReactNode }) => {
    */
   const removeFromSaved = async (listing: IListing) => {
     setListingSearchLoading(true);
-    await fakeApiCall();
+    if (useFakeApiCall) await fakeApiCall();
 
-    const newSavedListings = savedListings.filter(
-      (listingToCompare) => listing.id !== listingToCompare.id
+    const newSavedListings = removeFromListingFromArray(
+      savedListings,
+      listing.id
     );
+
     availableListings.push(listing);
 
-    setSavedListings(sortListings(newSavedListings));
-    setAvailableListings(sortListings(availableListings));
+    setSavedListings(sortListingsById(newSavedListings));
+    setAvailableListings(sortListingsById(availableListings));
 
     setListingSearchLoading(false);
   };
 
-  const providerValue: IListingsContext = {
+  //Update the provider values
+  providerValue = {
     savedListings,
     availableListings,
     listingSearchLoading,
     searchListings,
     saveListing,
     removeFromSaved,
+    useFakeApiCall,
   };
 
   /**
    * On load set listings
    */
   useEffect(() => {
-    console.log("search for all list automatically");
     searchListings();
   }, []);
 

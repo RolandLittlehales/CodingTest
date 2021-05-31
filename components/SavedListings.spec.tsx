@@ -1,13 +1,13 @@
 import { configure, mount, ReactWrapper, ShallowWrapper } from "enzyme";
+import Adapter from "enzyme-adapter-react-16";
+import jsdom from "jsdom";
 import React from "react";
 import initData, { IListing } from "../data/initData";
-import ListingsProvider, {
+import {
   IListingsContext,
   ListingsContext,
 } from "../providers/ListingsProvider";
 import SavedListings from "./SavedListings";
-import Adapter from "enzyme-adapter-react-16";
-import jsdom from "jsdom";
 
 configure({ adapter: new Adapter() });
 
@@ -23,6 +23,7 @@ const testProvider: IListingsContext = {
   searchListings: () => null,
   saveListing: (listing: IListing) => null,
   removeFromSaved: (listing: IListing) => null,
+  useFakeApiCall: false,
 };
 
 describe("SavedListings", () => {

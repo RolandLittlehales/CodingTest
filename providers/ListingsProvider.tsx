@@ -31,6 +31,56 @@ export let providerValue: IListingsContext = {
   useFakeApiCall: true,
 };
 
+/**
+ * Exposes to allow for testing
+ * @testing only
+ */
+export const listingsProviderUpdateListing = async ({
+  setListingSearchLoading,
+  fakeApiCall,
+  useFakeApiCall,
+  savedListings,
+  availableListings,
+  listing,
+  setSavedListings,
+  setAvailableListings,
+  save,
+}: {
+  fakeApiCall: () => void;
+  useFakeApiCall: boolean;
+  savedListings: IListing[];
+  availableListings: IListing[];
+  listing: IListing;
+  save: boolean;
+  setListingSearchLoading: (val: boolean) => void;
+  setSavedListings: (val: IListing[]) => void;
+  setAvailableListings: (val: IListing[]) => void;
+}) => {
+  setListingSearchLoading(true);
+  if (useFakeApiCall) await fakeApiCall();
+
+  let newAvailableListings: IListing[];
+  let newSavedListings: IListing[];
+
+  if (save) {
+    newAvailableListings = removeFromListingFromArray(
+      availableListings,
+      listing.id
+    );
+    newSavedListings = savedListings;
+    savedListings.push(listing);
+  } else {
+    newSavedListings = removeFromListingFromArray(savedListings, listing.id);
+    newAvailableListings = availableListings;
+    newAvailableListings.push(listing);
+  }
+
+  setSavedListings(sortListingsById(newSavedListings));
+  setAvailableListings(sortListingsById(newAvailableListings));
+
+  setListingSearchLoading(false);
+};
+
 const ListingsProvider = ({ children }: { children: ReactNode }) => {
   const [savedListings, setSavedListings] = useState<IListing[]>(
     providerValue.savedListings
@@ -60,42 +110,35 @@ const ListingsProvider = ({ children }: { children: ReactNode }) => {
    * Add the listing to save and remove it from available
    * @param listing
    */
-  const saveListing = async (listing: IListing) => {
-    setListingSearchLoading(true);
-    if (useFakeApiCall) await fakeApiCall();
-
-    const newAvailableListings = removeFromListingFromArray(
+  const saveListing = async (listing: IListing) =>
+    listingsProviderUpdateListing({
+      setListingSearchLoading,
+      useFakeApiCall,
+      fakeApiCall,
       availableListings,
-      listing.id
-    );
-    savedListings.push(listing);
-
-    setSavedListings(sortListingsById(savedListings));
-    setAvailableListings(sortListingsById(newAvailableListings));
-
-    setListingSearchLoading(false);
-  };
+      savedListings,
+      setSavedListings,
+      setAvailableListings,
+      listing,
+      save: true,
+    });
 
   /**
    * Add the listing from saved and add it to available
    * @param listing
    */
-  const removeFromSaved = async (listing: IListing) => {
-    setListingSearchLoading(true);
-    if (useFakeApiCall) await fakeApiCall();
-
-    const newSavedListings = removeFromListingFromArray(
+  const removeFromSaved = async (listing: IListing) =>
+    listingsProviderUpdateListing({
+      setListingSearchLoading,
+      useFakeApiCall,
+      fakeApiCall,
+      availableListings,
       savedListings,
-      listing.id
-    );
-
-    availableListings.push(listing);
-
-    setSavedListings(sortListingsById(newSavedListings));
-    setAvailableListings(sortListingsById(availableListings));
-
-    setListingSearchLoading(false);
-  };
+      setSavedListings,
+      setAvailableListings,
+      listing,
+      save: false,
+    });
 
   //Update the provider values
   providerValue = {

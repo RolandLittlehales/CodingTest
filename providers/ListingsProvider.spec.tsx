@@ -3,8 +3,12 @@ import Adapter from "enzyme-adapter-react-16";
 import jsdom from "jsdom";
 import React, { useContext } from "react";
 import { act } from "react-dom/test-utils";
-import initData from "../data/initData";
-import { ListingsContext, providerValue } from "./ListingsProvider";
+import initData, { IListing } from "../data/initData";
+import {
+  ListingsContext,
+  listingsProviderUpdateListing,
+  providerValue,
+} from "./ListingsProvider";
 
 configure({ adapter: new Adapter() });
 
@@ -82,6 +86,7 @@ describe("ListingsProvider", () => {
 
     //Having issues with updating the state in test mode, maybe useContext was not the best  approach for a coding challenge
     // Uncomment below to see that the state in the test does not update and hence this test fails
+    //See below test for a working test that tests the logic
 
     // expect(component.find("#mock_saved").text()).toBe("0");
     // expect(component.find("#mock_available").text()).toBe("4");
@@ -92,5 +97,41 @@ describe("ListingsProvider", () => {
     });
     expect(component.find("#mock_saved").text()).toBe("1");
     expect(component.find("#mock_available").text()).toBe("3");
+  });
+
+  it("test the exposed listingsProviderUpdateListing function", () => {
+    //This test is to test the same test as above but due to issue in updating state in context, have removed the logic from within the provider
+    // and am testing the logic directly
+
+    let savedListings = initData.saved;
+    let availableListings = initData.results;
+
+    const testRemoveFlow = {
+      listing: savedListings[0],
+      savedListings,
+      availableListings,
+      useFakeApiCall: false,
+      save: false,
+      fakeApiCall: () => null,
+      setListingSearchLoading: (val: boolean) => val,
+      setSavedListings: (val: IListing[]) => (savedListings = val),
+      setAvailableListings: (val: IListing[]) => (availableListings = val),
+    };
+
+    expect(savedListings.length).toBe(1);
+    expect(availableListings.length).toBe(3);
+
+    listingsProviderUpdateListing(testRemoveFlow);
+    expect(savedListings.length).toBe(0);
+    expect(availableListings.length).toBe(4);
+
+    listingsProviderUpdateListing({
+      ...testRemoveFlow,
+      savedListings,
+      availableListings,
+      save: true,
+    });
+    expect(savedListings.length).toBe(1);
+    expect(availableListings.length).toBe(3);
   });
 });

@@ -32,7 +32,7 @@ export let providerValue: IListingsContext = {
 };
 
 /**
- * Exposes to allow for testing
+ * Exposed to allow for testing
  * @testing only
  */
 export const listingsProviderUpdateListing = async ({

@@ -1,4 +1,4 @@
-import HomeBody from "../components/HomeBody";
+import HomeBody from "../components/HomeBody/HomeBody";
 import ListingsProvider from "../providers/ListingsProvider";
 import styles from "../styles/Home.module.css";
 

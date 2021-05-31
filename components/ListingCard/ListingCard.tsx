@@ -11,8 +11,8 @@ import {
   Typography,
 } from "@material-ui/core";
 import React, { useContext, useState } from "react";
-import { IListing } from "../data/initData";
-import { ListingsContext } from "../providers/ListingsProvider";
+import { IListing } from "../../data/initData";
+import { ListingsContext } from "../../providers/ListingsProvider";
 
 const useStyles = makeStyles({
   root: () => ({

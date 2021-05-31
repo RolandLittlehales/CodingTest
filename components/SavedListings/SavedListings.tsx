@@ -1,7 +1,7 @@
 import { Grid, Typography } from "@material-ui/core";
 import React, { useContext } from "react";
-import { ListingsContext } from "../providers/ListingsProvider";
-import ListingCard from "./ListingCard";
+import { ListingsContext } from "../../providers/ListingsProvider";
+import ListingCard from "../ListingCard/ListingCard";
 
 const SavedListings = () => {
   const { savedListings } = useContext(ListingsContext);

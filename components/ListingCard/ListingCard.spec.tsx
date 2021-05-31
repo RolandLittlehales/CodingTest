@@ -2,11 +2,11 @@ import { configure, mount, ReactWrapper, ShallowWrapper } from "enzyme";
 import Adapter from "enzyme-adapter-react-16";
 import jsdom from "jsdom";
 import React from "react";
-import initData, { IListing } from "../data/initData";
+import initData, { IListing } from "../../data/initData";
 import {
   IListingsContext,
   ListingsContext,
-} from "../providers/ListingsProvider";
+} from "../../providers/ListingsProvider";
 import ListingCard from "./ListingCard";
 
 configure({ adapter: new Adapter() });

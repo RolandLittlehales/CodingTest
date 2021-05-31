@@ -1,9 +1,9 @@
 import { Grid, Typography } from "@material-ui/core";
 import React from "react";
-import CompanyLogo from "../icons/CompanyLogo";
-import styles from "../styles/Home.module.css";
-import SavedListings from "./SavedListings";
-import SearchResults from "./SearchResults";
+import CompanyLogo from "../../icons/CompanyLogo";
+import styles from "../../styles/Home.module.css";
+import SavedListings from "../SavedListings/SavedListings";
+import SearchResults from "../SearchResults/SearchResults";
 
 const HomeBody = () => {
   return (
